@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS public.model_login
     CONSTRAINT login_unique UNIQUE (login)
 );
 
-##Running the Application
+## Running the Application
 
 - Ensure that you have a PostgreSQL database server installed and running.
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS public.model_login
 
 - Access the application through a web browser using the appropriate URL.
 
-##Additional Notes
+## Additional Notes
 
 - The project uses Bootstrap for styling and jQuery for JavaScript functionality. These libraries are included via CDN links.
 
@@ -84,5 +84,6 @@ CREATE TABLE IF NOT EXISTS public.model_login
 - User authentication is implemented using session management, and user credentials are stored in the database.
 
 - Feel free to explore and modify the code to suit your learning needs. If you have any questions or encounter issues, please refer to the provided code comments or seek assistance in relevant programming forums.
+
 
 
