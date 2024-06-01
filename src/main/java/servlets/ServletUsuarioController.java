@@ -30,6 +30,9 @@ public class ServletUsuarioController extends HttpServlet {
 			throws ServletException, IOException {
 
 		try {
+			
+			String msg = "Gravou usuário com sucesso!";
+			
 			String id = request.getParameter("id");
 			String nome = request.getParameter("nome");
 			String email = request.getParameter("email");
@@ -43,10 +46,14 @@ public class ServletUsuarioController extends HttpServlet {
 			modelLogin.setEmail(email);
 			modelLogin.setLogin(login);
 			modelLogin.setSenha(senha);
-
-			modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
 			
-			request.setAttribute("msg", "Gravou usuário com sucesso!");
+			if(daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
+				msg = "Já existe usuário com esse login aí, informe outro login!";
+			}else {
+				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
+			}
+						
+			request.setAttribute("msg", msg);
 			request.setAttribute("modelLogin", modelLogin);
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 		} catch (Exception e) {
