@@ -16,18 +16,34 @@ public class DAOUsuarioRepository {
 	}
 
 	public ModelLogin gravarUsuario(ModelLogin modelLogin) throws Exception {
-		String sql = "INSERT INTO public.model_login(login, senha, nome, email) VALUES (?, ?, ?, ?)";
-
-		PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-		preparedStatement.setString(1, modelLogin.getLogin());
-		preparedStatement.setString(2, modelLogin.getSenha());
-		preparedStatement.setString(3, modelLogin.getNome());
-		preparedStatement.setString(4, modelLogin.getEmail());
 		
-		preparedStatement.execute();
+		String sql = "";
+		PreparedStatement preparedStatement = null;
+		if(modelLogin.ehNovoLogin()) {
+			sql = "INSERT INTO public.model_login(login, senha, nome, email) VALUES (?, ?, ?, ?)";
 
-		connection.commit();
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setString(1, modelLogin.getLogin());
+			preparedStatement.setString(2, modelLogin.getSenha());
+			preparedStatement.setString(3, modelLogin.getNome());
+			preparedStatement.setString(4, modelLogin.getEmail());
+			
+			preparedStatement.execute();
+
+			connection.commit();
+		}else {
+			sql = "UPDATE public.model_login SET login=?, senha=?, nome=?, email=? WHERE id = "+modelLogin.getId()+";";
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, modelLogin.getLogin());
+			preparedStatement.setString(2,  modelLogin.getSenha());
+			preparedStatement.setString(3, modelLogin.getNome());
+			preparedStatement.setString(4, modelLogin.getEmail());
+		
+			preparedStatement.executeUpdate();
+			
+			connection.commit();
+		}
 		
 		return this.consultarUsuario(modelLogin.getLogin());
 	}
@@ -35,7 +51,7 @@ public class DAOUsuarioRepository {
 	
 	public ModelLogin consultarUsuario(String login) throws Exception {
 		ModelLogin modelLogin = new ModelLogin();
-		String sql = "select * from model_login where upper(login) = upper('"+login+"')";
+		String sql = "SELECT * FROM model_login WHERE UPPER(login) = UPPER('"+login+"')";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		
@@ -54,7 +70,7 @@ public class DAOUsuarioRepository {
 	
 	
 	public boolean validarLogin(String login) throws Exception {
-		String sql = "SELECT COUNT(1) > 0 AS existe FROM model_login WHERE UPPER(login) = upper('"+login+"');";
+		String sql = "SELECT COUNT(1) > 0 AS existe FROM model_login WHERE UPPER(login) = UPPER('"+login+"');";
 		PreparedStatement statement = connection.prepareStatement(sql);
 		ResultSet resultSet = statement.executeQuery();
 		resultSet.next();
