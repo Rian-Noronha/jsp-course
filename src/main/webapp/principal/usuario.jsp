@@ -30,8 +30,6 @@
 									<!-- Page-body start -->
 									<div class="page-body">
 
-
-
 										<div class="row">
 											<div class="col-sm-12">
 												<!-- Basic Form Inputs card start -->
@@ -40,8 +38,10 @@
 													<div class="card-block">
 														<h4 class="sub-title">Cad. Usuário</h4>
 
-
-														<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post">
+														<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser">
+															
+															<input type="hidden" name="acao" id="acao" value="">
+															
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="id" id="id"
 																	class="form-control" readonly="readonly" value="${modelLogin.id}"> <span
@@ -72,9 +72,9 @@
 																	class="form-bar"></span> <label class="float-label">Senha</label>
 															</div>
 																
-														  	<button class="btn btn-primary waves-effect waves-light">Novo</button>
-												            <button class="btn btn-success waves-effect waves-light">Salvar</button>
-												            <button class="btn btn-info waves-effect waves-light">Excluir</button>
+														  	<button class="btn btn-primary waves-effect waves-light"  type="submit" onclick="limparForm()">Novo</button>
+												            <button class="btn btn-success waves-effect waves-light" type="button">Salvar</button>
+												            <button class="btn btn-info waves-effect waves-light" type="button" onClick="deletarUsuario();">Excluir</button>
 												           
 
 														</form>
@@ -100,7 +100,25 @@
 
 	<!-- Required Jquery -->
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
+	
+	<script type="text/javascript">
+	
+		function limparForm(){
+			var elementos = document.getElementById("formUser").elements;
+			for(var e = 0; e < elementos.length; e++){
+				elementos[e].value = "";
+			}
+		}
+		
+		function deletarUsuario() {
+			document.getElementById("formUser").method = 'get';
+			document.getElementById("acao").value = 'deletar';
+			document.getElementById("formUser").submit();
+		}
+		
+	
+	</script>
+	
 </body>
 
 </html>
-
