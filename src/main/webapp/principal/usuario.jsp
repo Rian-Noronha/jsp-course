@@ -73,7 +73,7 @@
 															</div>
 																
 														  	<button class="btn btn-primary waves-effect waves-light"  type="submit" onclick="limparForm()">Novo</button>
-												            <button class="btn btn-success waves-effect waves-light" type="button">Salvar</button>
+												            <button class="btn btn-success waves-effect waves-light">Salvar</button>
 												            <button class="btn btn-info waves-effect waves-light" type="button" onClick="deletarUsuario();">Excluir</button>
 												           
 
