@@ -74,7 +74,7 @@
 																
 														  	<button class="btn btn-primary waves-effect waves-light"  type="submit" onclick="limparForm()">Novo</button>
 												            <button class="btn btn-success waves-effect waves-light">Salvar</button>
-												            <button class="btn btn-info waves-effect waves-light" type="button" onClick="deletarUsuario();">Excluir</button>
+												            <button class="btn btn-info waves-effect waves-light" type="button" onClick="deletarComAjax();">Excluir</button>
 												           
 
 														</form>
@@ -83,7 +83,7 @@
 											</div>
 										</div>
 										
-										<span>${msg}</span>
+										<span id="msg">${msg}</span>
 
 									</div>
 									<!-- Page-body end -->
@@ -103,6 +103,32 @@
 	
 	<script type="text/javascript">
 	
+	
+		function deletarComAjax(){
+			if(confirm("Deseja, realmente, excluir os dados?")){
+				var urlAction = document.getElementById("formUser").action;
+				var idUser = document.getElementById("id").value;
+				
+				$.ajax({
+					
+					method: "get",
+					url: urlAction,
+					data: "id=" + idUser + "&acao=deletarajax",
+					success: function(response){
+						limparForm();
+						alert(response);
+						document.getElementById("msg").textContent = response;
+					}
+					
+				}).fail(function(xhr, status, errorThrown){
+					alert("Erro ao deletar o usuário por id: " + xhr.responseText);
+				});
+				
+			}
+		}
+	
+	
+	
 		function limparForm(){
 			var elementos = document.getElementById("formUser").elements;
 			for(var e = 0; e < elementos.length; e++){
@@ -111,9 +137,14 @@
 		}
 		
 		function deletarUsuario() {
-			document.getElementById("formUser").method = 'get';
-			document.getElementById("acao").value = 'deletar';
-			document.getElementById("formUser").submit();
+			
+			if(confirm("Deseja, realmente, excluir os dados?")){
+				document.getElementById("formUser").method = 'get';
+				document.getElementById("acao").value = 'deletar';
+				document.getElementById("formUser").submit();
+			}
+			
+			
 		}
 		
 	
