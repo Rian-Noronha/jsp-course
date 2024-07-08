@@ -75,7 +75,7 @@
 														  	<button class="btn btn-primary waves-effect waves-light"  type="submit" onclick="limparForm()">Novo</button>
 												            <button class="btn btn-success waves-effect waves-light">Salvar</button>
 												            <button class="btn btn-info waves-effect waves-light" type="button" onClick="deletarComAjax();">Excluir</button>
-												           
+												            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#userModal">Pesquisar</button>
 
 														</form>
 													</div>
@@ -100,54 +100,112 @@
 
 	<!-- Required Jquery -->
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
-	
+
+
+	<div class="modal fade" id="userModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Pesquisa de Usuário</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+
+					<div class="input-group mb-3">
+						<input type="text" class="form-control"
+							placeholder="nome"
+							aria-label="nome" aria-describedby="basic-addon2" id="busca">
+						<div class="input-group-append">
+							<button class="btn btn-success type="button" onclick="buscarUsuario();">Buscar</button>
+						</div>
+					</div>
+
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Ver</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+						</tbody>
+					</table>
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	<script type="text/javascript">
 	
+		
+		function buscarUsuario(){
+			
+			var nomeBusca = document.getElementById("busca").value;
+			
+			if(nomeBusca != null && nomeBusca != "" && nomeBusca.trim() != ""){
+				alert(nomeBusca);
+			}
+			
+			
+		}
+		
 	
-		function deletarComAjax(){
-			if(confirm("Deseja, realmente, excluir os dados?")){
+		function deletarComAjax() {
+			if (confirm("Deseja, realmente, excluir os dados?")) {
 				var urlAction = document.getElementById("formUser").action;
 				var idUser = document.getElementById("id").value;
-				
+
 				$.ajax({
-					
-					method: "get",
-					url: urlAction,
-					data: "id=" + idUser + "&acao=deletarajax",
-					success: function(response){
+
+					method : "get",
+					url : urlAction,
+					data : "id=" + idUser + "&acao=deletarajax",
+					success : function(response) {
 						limparForm();
 						alert(response);
 						document.getElementById("msg").textContent = response;
 					}
-					
-				}).fail(function(xhr, status, errorThrown){
-					alert("Erro ao deletar o usuário por id: " + xhr.responseText);
-				});
-				
+
+				}).fail(
+						function(xhr, status, errorThrown) {
+							alert("Erro ao deletar o usuário por id: "
+									+ xhr.responseText);
+						});
+
 			}
 		}
-	
-	
-	
-		function limparForm(){
+
+		function limparForm() {
 			var elementos = document.getElementById("formUser").elements;
-			for(var e = 0; e < elementos.length; e++){
+			for (var e = 0; e < elementos.length; e++) {
 				elementos[e].value = "";
 			}
 		}
-		
+
 		function deletarUsuario() {
-			
-			if(confirm("Deseja, realmente, excluir os dados?")){
+
+			if (confirm("Deseja, realmente, excluir os dados?")) {
 				document.getElementById("formUser").method = 'get';
 				document.getElementById("acao").value = 'deletar';
 				document.getElementById("formUser").submit();
 			}
-			
-			
+
 		}
-		
-	
 	</script>
 	
 </body>
