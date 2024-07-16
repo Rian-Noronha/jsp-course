@@ -38,51 +38,64 @@
 													<div class="card-block">
 														<h4 class="sub-title">Cad. Usuário</h4>
 
-														<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser">
-															
+														<form class="form-material"
+															action="<%=request.getContextPath()%>/ServletUsuarioController"
+															method="post" id="formUser">
+
 															<input type="hidden" name="acao" id="acao" value="">
-															
+
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="id" id="id"
-																	class="form-control" readonly="readonly" value="${modelLogin.id}"> <span
+																	class="form-control" readonly="readonly"
+																	value="${modelLogin.id}"> <span
 																	class="form-bar"></span> <label class="float-label">ID:</label>
 															</div>
 
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="nome" id="nome"
-																	class="form-control" required="required" value="${modelLogin.nome}"> <span
+																	class="form-control" required="required"
+																	value="${modelLogin.nome}"> <span
 																	class="form-bar"></span> <label class="float-label">Nome:</label>
 															</div>
 
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
-																	class="form-control" required="required" autocomplete="off" value="${modelLogin.email}"> <span
-																	class="form-bar"></span> <label class="float-label">Email:</label>
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.email}">
+																<span class="form-bar"></span> <label
+																	class="float-label">Email:</label>
 															</div>
-															
+
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" id="login"
-																	class="form-control" required="required" autocomplete="off" value="${modelLogin.login}"> <span
-																	class="form-bar"></span> <label class="float-label">Login</label>
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.login}">
+																<span class="form-bar"></span> <label
+																	class="float-label">Login</label>
 															</div>
-															
+
 															<div class="form-group form-default form-static-label">
 																<input type="password" name="senha" id="senha"
-																	class="form-control" required="required" autocomplete="off" value="${modelLogin.senha}"> <span
-																	class="form-bar"></span> <label class="float-label">Senha</label>
+																	class="form-control" required="required"
+																	autocomplete="off" value="${modelLogin.senha}">
+																<span class="form-bar"></span> <label
+																	class="float-label">Senha</label>
 															</div>
-																
-														  	<button class="btn btn-primary waves-effect waves-light"  type="submit" onclick="limparForm()">Novo</button>
-												            <button class="btn btn-success waves-effect waves-light">Salvar</button>
-												            <button class="btn btn-info waves-effect waves-light" type="button" onClick="deletarComAjax();">Excluir</button>
-												            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#userModal">Pesquisar</button>
+
+															<button class="btn btn-primary waves-effect waves-light"
+																type="submit" onclick="limparForm()">Novo</button>
+															<button class="btn btn-success waves-effect waves-light">Salvar</button>
+															<button class="btn btn-info waves-effect waves-light"
+																type="button" onClick="deletarComAjax();">Excluir</button>
+															<button type="button" class="btn btn-secondary"
+																data-toggle="modal" data-target="#userModal">Pesquisar</button>
 
 														</form>
 													</div>
 												</div>
 											</div>
 										</div>
-										
+
 										<span id="msg">${msg}</span>
 
 									</div>
@@ -107,7 +120,8 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Pesquisa de Usuário</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Pesquisa de
+						Usuário</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -117,11 +131,11 @@
 
 
 					<div class="input-group mb-3">
-						<input type="text" class="form-control"
-							placeholder="nome"
+						<input type="text" class="form-control" placeholder="nome"
 							aria-label="nome" aria-describedby="basic-addon2" id="busca">
 						<div class="input-group-append">
-							<button class="btn btn-success type="button" onclick="buscarUsuario();">Buscar</button>
+							<button class="btn btn-success type="
+								button" onclick="buscarUsuario();">Buscar</button>
 						</div>
 					</div>
 
@@ -135,7 +149,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							
+
 						</tbody>
 					</table>
 
@@ -151,20 +165,34 @@
 
 
 	<script type="text/javascript">
-	
-		
-		function buscarUsuario(){
-			
+		function buscarUsuario() {
+
 			var nomeBusca = document.getElementById("busca").value;
-			
-			if(nomeBusca != null && nomeBusca != "" && nomeBusca.trim() != ""){
-				alert(nomeBusca);
+
+			if (nomeBusca != null && nomeBusca != "" && nomeBusca.trim() != "") {
+				
+				var urlAction = document.getElementById("formUser").action;
+				
+				$.ajax({
+
+					method : "get",
+					url : urlAction,
+					data : "nomeBusca=" + nomeBusca + "&acao=buscarUserAjax",
+					success : function(response) {
+						alert(response)
+					}
+
+				}).fail(
+						function(xhr, status, errorThrown) {
+							alert("Erro ao buscar usuário por nome:"
+									+ xhr.responseText);
+				});
+				
+				
 			}
-			
-			
+
 		}
-		
-	
+
 		function deletarComAjax() {
 			if (confirm("Deseja, realmente, excluir os dados?")) {
 				var urlAction = document.getElementById("formUser").action;
@@ -185,7 +213,7 @@
 						function(xhr, status, errorThrown) {
 							alert("Erro ao deletar o usuário por id: "
 									+ xhr.responseText);
-						});
+				});
 
 			}
 		}
@@ -207,7 +235,7 @@
 
 		}
 	</script>
-	
+
 </body>
 
 </html>
