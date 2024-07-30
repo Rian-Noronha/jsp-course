@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -140,7 +144,9 @@
 					</div>
 
 
-					<table class="table">
+					<div style="height: 300px;overflow: scroLL;">
+						
+						<table class="table" id="tabelaResultados">
 						<thead>
 							<tr>
 								<th scope="col">ID</th>
@@ -152,8 +158,8 @@
 
 						</tbody>
 					</table>
-
-
+					</div>
+					<span id="totalResultados"></span>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -165,6 +171,15 @@
 
 
 	<script type="text/javascript">
+	
+		function verEditar(id){
+			var urlAction = document.getElementById("formUser").action;
+			
+			window.location.href = urlAction + "?acao=buscarEditar&id="+id;
+			
+		}
+	
+	
 		function buscarUsuario() {
 
 			var nomeBusca = document.getElementById("busca").value;
@@ -179,7 +194,16 @@
 					url : urlAction,
 					data : "nomeBusca=" + nomeBusca + "&acao=buscarUserAjax",
 					success : function(response) {
-						alert(response)
+						
+						var json = JSON.parse(response);
+						
+						$('#tabelaResultados > tbody > tr').remove();
+						
+						for(var p = 0; p < json.length; p++){
+							$('#tabelaResultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td> '+json[p].nome+'</td> <td><button onClick="verEditar('+json[p].id+')"  type="button" class="btn btn-info">Ver</button></td> </tr>')
+						}
+						
+						document.getElementById("totalResultados").textContent = "Resultados: " + json.length;
 					}
 
 				}).fail(
